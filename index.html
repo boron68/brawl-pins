@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>brawl pins</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #003300;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(#00FF00 1px, transparent 1px), linear-gradient(90deg, #00FF00 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+        }
+
+        .top-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #4682B4;
+            padding: 10px;
+            width: 90%;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .top-panel div {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .top-panel img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .middle-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 90%;
+            margin-top: -180px;
+        }
+
+        .power {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #4682B4;
+            padding: 10px 20px;
+            border-radius: 10px;
+        }
+
+        .character {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: -30px;
+            cursor: pointer;
+        }
+
+        .character img {
+            width: 100px;
+            height: 100px;
+        }
+
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .pinpack {
+            margin-bottom: 10px;
+            margin-left: -40px; /* Зміщення ліворуч */
+        }
+
+        .pinpack img {
+            width: 60px;
+            height: auto;
+            cursor: pointer;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .button {
+            background: #4682B4;
+            color: white;
+            border-radius: 5px;
+            padding: 10px 20px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .scene {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #87CEEB;
+            flex-direction: column;
+            align-items: center;
+            justify-content: start;
+            padding-top: 50px;
+            z-index: 10;
+        }
+
+        .scene img {
+            width: 80px;
+            height: auto;
+            margin: 0 20px;
+        }
+
+        .scene-row {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .scene-button {
+            background: #4682B4;
+            color: white;
+            border-radius: 5px;
+            padding: 10px 20px;
+            text-align: center;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- Сітчастий фон -->
+    <div class="grid"></div>
+
+    <!-- Верхня панель -->
+    <div class="top-panel">
+        <div>
+            🎄 <span>0</span>
+        </div>
+        <div>
+            <img src="img/coin.png" alt="Coin Icon"> <span id="coins">0</span>
+        </div>
+        <div>
+            💎 <span>0</span>
+        </div>
+    </div>
+
+    <!-- Середня панель -->
+    <div class="middle-panel">
+        <div class="power">
+            ⚡ <span>Сила 1</span>
+        </div>
+        <div>
+            ☢️
+        </div>
+    </div>
+
+    <!-- Зображення персонажа -->
+    <div class="character" onclick="increaseCoins()">
+        <img id="mainCharacter" src="img/pin_seasson_29_44.png" alt="Character">
+    </div>
+
+    <!-- Кнопки внизу -->
+    <div class="buttons-container">
+        <div class="pinpack">
+            <img src="img/pinpack.png" alt="Pinpack" onclick="showPinpackScene()">
+        </div>
+        <div class="buttons">
+            <div class="button" onclick="showCharacterScene()">Персонажі</div>
+            <div class="button">Магазин</div>
+        </div>
+    </div>
+
+    <!-- Сцена "Персонажі" -->
+    <div id="characterScene" class="scene">
+        <div class="scene-row">
+            <img src="img/pin_seasson_29_44.png" alt="Character 1" onclick="setMainCharacter('img/pin_seasson_29_44.png')">
+            <div style="position: relative;">
+                <img src="img/shelly_gg_pin.png" alt="Character 2" id="shelly" onclick="setMainCharacter('img/shelly_gg_pin.png')">
+                <span id="lockShelly" style="position: absolute; top: 0; left: 0; color: black;">🔒</span>
+            </div>
+            <div style="position: relative;">
+                <img src="img/8bit_special_pin.png" alt="Character 3" id="8bit" onclick="setMainCharacter('img/8bit_special_pin.png')">
+                <span id="lock8bit" style="position: absolute; top: 0; left: 0; color: black;">🔒</span>
+            </div>
+        </div>
+        <div class="scene-button" onclick="hideCharacterScene()">Назад</div>
+    </div>
+
+    <!-- Сцена "Пін пак" -->
+    <div id="pinpackScene" class="scene">
+        <img id="pinpackImage" src="" alt="Random Pin">
+        <div class="scene-button" onclick="hidePinpackScene()">Назад</div>
+    </div>
+
+    <!-- Скрипт -->
+    <script>
+        let coins = 0;
+
+        function increaseCoins() {
+            coins++;
+            document.getElementById("coins").textContent = coins;
+
+            const audio = new Audio('snd/getmoney2.ogg');
+            audio.play();
+        }
+
+        function showCharacterScene() {
+            document.getElementById("characterScene").style.display = "flex";
+        }
+
+        function hideCharacterScene() {
+            document.getElementById("characterScene").style.display = "none";
+        }
+
+        function showPinpackScene() {
+            const pinImages = ["img/shelly_gg_pin.png", "img/8bit_special_pin.png"];
+            const randomIndex = Math.floor(Math.random() * pinImages.length);
+            const selectedPin = pinImages[randomIndex];
+            document.getElementById("pinpackImage").src = selectedPin;
+            document.getElementById("pinpackScene").style.display = "flex";
+
+            if (selectedPin === "img/shelly_gg_pin.png") {
+                document.getElementById("lockShelly").style.display = "none";
+            } else if (selectedPin === "img/8bit_special_pin.png") {
+                document.getElementById("lock8bit").style.display = "none";
+            }
+        }
+
+        function hidePinpackScene() {
+            document.getElementById("pinpackScene").style.display = "none";
+        }
+
+        function setMainCharacter(imagePath) {
+            const lockShelly = document.getElementById("lockShelly").style.display !== "none";
+            const lock8bit = document.getElementById("lock8bit").style.display !== "none";
+
+            if ((imagePath === "img/shelly_gg_pin.png" && lockShelly) || 
+                (imagePath === "img/8bit_special_pin.png" && lock8bit)) {
+                return;
+            }
+
+            document.getElementById("mainCharacter").src = imagePath;
+        }
+    </script>
+</body>
+</html>
